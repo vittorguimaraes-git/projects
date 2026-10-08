@@ -18,6 +18,10 @@ build/
 dist/
 *.egg-info/
 
+# Project and dependency configuration
+pyproject.toml
+uv.lock
+
 # Local environment variables and secrets
 .env
 .env.*
