@@ -38,13 +38,16 @@ while True:
             print(f"Task '{desc}' added with priority '{priority}'")
 
         case "list":
+            priority_order = {"high": 3, "medium": 2, "low": 1}
+            priority_icons = {"high": "🔴", "medium": "🟡", "low": "🟢"}
             if not todo:
                 print("There are no task")
             else:
                 print("=" * 50)
-                for i, task in enumerate(todo, start=1):
+                for i, task in enumerate(sorted(todo, key=lambda t: priority_order[t["priority"]], reverse=True), start=1):
                     markup = "[x]" if task["status"] else "[ ]"
-                    print(f"{i:02d} | {markup} | {task['description']} (Priority: {task['priority']})")
+                    icon = priority_icons[task["priority"]]
+                    print(f"{i} - | {markup} | {task['description']} {icon}")
                 print("=" * 50)
 
         case "done":
@@ -60,13 +63,19 @@ while True:
             try:
                 edit = int(input("Enter the task number: "))
                 new_description = input("Enter a new description: ").strip().title()
+                new_priority = input("Enter a new priority (high | medium | low): ").strip().lower()
                 confirmation = input("Do you really want to edit the task? [y/n]: ").strip().lower()
 
-                if not new_description:
+                if new_priority not in ["high", "medium", "low"] or not new_priority:
+                    print("Invalid priority")
+
+                elif not new_description:
                     print("Description cannot be empty")
+                    
                 elif confirmation in ["y", "yes"]:
-                    todo[edit - 1]["description"] = new_description
+                    todo[edit- 1]["description"] = new_description
                     todo[edit - 1]["status"] = False
+                    todo[edit - 1]["priority"] = new_priority
                     print(f"✏️ Task updated to: {new_description}")
 
             except (ValueError, IndexError):
@@ -76,7 +85,7 @@ while True:
             try:
                 remove = int(input("Enter the task number: "))
                 confirmation = input("Do you really want to remove the task? [y/n]: ").strip().lower()
-                task = todo[remove - 1]["description"]
+                task = todo[remove- 1]["description"]
 
                 if confirmation in ["y", "yes"]:
                     todo.pop(remove - 1)
