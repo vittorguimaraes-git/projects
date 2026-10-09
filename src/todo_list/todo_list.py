@@ -38,6 +38,7 @@ while True:
 
             todo.append({"description": desc, "status": False, "priority": priority})
             print(f"➕ Task '{desc}' added with priority '{priority}'")
+            print()
 
         case "list":
             priority_order = {"high": 3, "medium": 2, "low": 1}
@@ -148,11 +149,10 @@ while True:
             else:
                 count = 0
                 print("=" * 50)
-                for i in range(len(todo)):
-                    if todo[i]["status"]:
-                        task = todo[i]["description"]
-                        icon = priority_icons[todo[i]["priority"]]
-                        print(f"{i + 1} - | [x] | {task} {icon}")
+                for i, task in enumerate(todo, start=1):
+                    if task["status"]:
+                        icon = priority_icons[task["priority"]]
+                        print(f"{i - count} - | [x] | {task['description']} {icon}")
                     else:
                         count += 1
                 if count == len(todo):
@@ -169,11 +169,10 @@ while True:
             else:
                 count = 0
                 print("=" * 50)
-                for i in range(len(todo)):
-                    if not todo[i]["status"]:
-                        task = todo[i]["description"]
-                        icon = priority_icons[todo[i]["priority"]]
-                        print(f"{i + 1} - | [ ] | {task} {icon}")
+                for i, task in enumerate(todo, start=1):
+                    if not task["status"]:
+                        icon = priority_icons[task["priority"]]
+                        print(f"{i - count} - | [ ] | {task['description']} {icon}")
                     else:
                         count += 1
                 if count == len(todo):
